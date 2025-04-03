@@ -6,7 +6,7 @@ import { getLatestProducts } from "@/lib/actions/product.actions";
 // example loading feature
 // const HomePage = async () => {
 // await delay(2000);
-//   return <>Prostore</>;
+//   return <>Neostore</>;
 // };
 
 const HomePage = async () => {
