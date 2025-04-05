@@ -3,6 +3,7 @@ import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import OrderDetailsTable from "./order-details-table";
 import { ShippingAddress } from "@/types";
+import { auth } from "@/auth";
 
 export const metadata: Metadata = {
   title: "Order Details",
@@ -18,19 +19,16 @@ const OrderDetailsPage = async (props: {
   const order = await getOrderById(id);
   if (!order) return notFound();
 
+  const session = await auth();
+
   return (
-    // <>
-    //   Oder {process.env.PAYPAL_CLIENT_ID}
-    //   <div>
-    //     <pre>{JSON.stringify(order, null, 2)}</pre>
-    //   </div>
-    // </>
     <OrderDetailsTable
       order={{
         ...order,
         shippingAddress: order.shippingAddress as ShippingAddress,
       }}
       paypalClientId={process.env.PAYPAL_CLIENT_ID || "sb"}
+      isAdmin={session?.user?.role === "admin" || false}
     />
   );
 };
