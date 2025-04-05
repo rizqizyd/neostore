@@ -19,11 +19,18 @@ const OrderDetailsPage = async (props: {
   if (!order) return notFound();
 
   return (
+    // <>
+    //   Oder {process.env.PAYPAL_CLIENT_ID}
+    //   <div>
+    //     <pre>{JSON.stringify(order, null, 2)}</pre>
+    //   </div>
+    // </>
     <OrderDetailsTable
       order={{
         ...order,
         shippingAddress: order.shippingAddress as ShippingAddress,
       }}
+      paypalClientId={process.env.PAYPAL_CLIENT_ID || "sb"}
     />
   );
 };
