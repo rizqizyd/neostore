@@ -6,6 +6,7 @@ import { convertToPlainObject, formatError } from "../utils";
 import { LATEST_PRODUCTS_LIMIT, PAGE_SIZE } from "../constants";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
+import { Prisma } from "@prisma/client";
 
 // Get latest products
 export async function getLatestProducts() {
@@ -51,13 +52,27 @@ export async function getAllProducts({
   page: number;
   category?: string;
 }) {
+  const queryFilter: Prisma.ProductWhereInput =
+    query && query !== "all"
+      ? {
+          name: {
+            contains: query,
+            mode: "insensitive",
+          } as Prisma.StringFilter,
+        }
+      : {};
+
+  const categoryFilter = category && category !== "all" ? { category } : {};
+
   const data = await prisma.product.findMany({
+    where: {
+      ...queryFilter,
+      ...categoryFilter,
+    },
     orderBy: { createdAt: "desc" },
     skip: (page - 1) * limit,
     take: limit,
   });
-
-  console.log(query, category);
 
   const dataCount = await prisma.product.count();
 
