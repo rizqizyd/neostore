@@ -6,6 +6,8 @@ import {
 } from "@/lib/actions/product.actions";
 import Link from "next/link";
 
+export const dynamic = "force-dynamic";
+
 const prices = [
   {
     name: "$1 to $50",
