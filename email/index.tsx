@@ -4,7 +4,7 @@ import { Order } from "@/types";
 import PurchaseReceiptEmail from "./purchase-receipt";
 import "dotenv/config";
 
-const resend = new Resend(process.env.RESEND_API_KEY as string);
+const resend = new Resend(process.env.RESEND_API_KEY || "re_dummy");
 
 export const sendPurchaseReceipt = async ({ order }: { order: Order }) => {
   await resend.emails.send({
